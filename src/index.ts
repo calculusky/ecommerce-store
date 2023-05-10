@@ -1,6 +1,5 @@
 import logger from "moment-logger";
-import createServer, { CreateServerOptions } from "@/www";
-import routes from "@/routes";
+import createServer, { CreateServerOptions } from "./app";
 import { port, isProduction } from "@/config";
 import { prisma } from "./database";
 
@@ -25,11 +24,10 @@ async function startServer() {
             production: isProduction,
         };
 
-        const app = await createServer(options);
+        const app = createServer(options);
+        app.listen(options.port);
 
         logger.info(`Server started on port ${port}`);
-
-        app.use(routes);
     } catch (err) {
         logger.error(err);
     }

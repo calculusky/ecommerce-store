@@ -1,5 +1,5 @@
 import { prisma } from "@/database";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { APIResponse } from "../interfaces";
 import { DuplicateProductException } from "./errors";
 import { CreateProductOptions } from "./interfaces";

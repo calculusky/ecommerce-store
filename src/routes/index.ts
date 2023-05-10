@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { isProduction } from "@/config";
-import { PrismaClientValidationError } from "@prisma/client/runtime";
 
 import api from "./api";
 
@@ -21,14 +20,6 @@ router.use(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (err: RouteError, _req: Request, res: Response, _next: NextFunction) => {
         const error = err as RouteError;
-
-        // Catch database errors
-        if (err instanceof PrismaClientValidationError) {
-            // Only change the error message if its in production
-            if (isProduction) {
-                error.message = "Something went wrong";
-            }
-        }
 
         const status = err.status ?? 500;
         res.status(status).json({
