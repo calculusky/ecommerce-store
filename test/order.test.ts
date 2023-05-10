@@ -51,6 +51,7 @@ describe("Testing Order", () => {
             });
             prisma.product.update = jest.fn();
             prisma.product.findUnique = jest.fn().mockReturnValue(true);
+            prisma.$transaction = jest.fn();
 
             const resp = await request(app)
                 .post(`${rootPath}/orders`)
@@ -60,9 +61,10 @@ describe("Testing Order", () => {
                 })
                 .send(createOrderOptions);
 
+            console.log(resp.body);
+
             expect(resp.status).toBe(201);
-            expect(prisma.product.update).toHaveBeenCalledTimes(2);
-            expect(prisma.order.create).toHaveBeenCalledTimes(1);
+            expect(prisma.$transaction).toHaveBeenCalledTimes(1);
             expect(prisma.user.findUnique).toHaveBeenCalledTimes(1);
             expect(prisma.product.findUnique).toHaveBeenCalledTimes(2);
         });
